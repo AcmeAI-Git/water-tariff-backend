@@ -7,34 +7,65 @@ import {
   Post,
   Put,
   Query,
+  ParseIntPipe,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './user.entity';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
   @Get()
-  findAll(@Query('role') role?: 'INTERN' | 'EMPLOYEE' | 'ADMIN') {
+  async findAll(
+    @Query('zoneId') zoneId?: string,
+    @Query('wardId') wardId?: string,
+    @Query('status') status?: string,
+  ): Promise<User[]> {
+    if (zoneId) {
+      return this.usersService.findByZone(parseInt(zoneId));
+    }
+    if (wardId) {
+      return this.usersService.findByWard(parseInt(wardId));
+    }
+    if (status) {
+      return this.usersService.findByStatus(status);
+    }
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<User> {
+    return this.usersService.findOne(id);
   }
 
   @Post()
-  create(@Body() body: any) {
-    return this.usersService.create(body);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @HttpCode(HttpStatus.CREATED)
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return this.usersService.create(createUserDto);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() body: any) {
-    return this.usersService.update(+id, body);
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<User> {
+    return this.usersService.update(id, updateUserDto);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    return this.usersService.remove(id);
+  }
+
+  @Put(':id/activate')
+  @HttpCode(HttpStatus.OK)
+  async activate(@Param('id', ParseIntPipe) id: number): Promise<User> {
+    return this.usersService.updateStatus(id, 'active');
   }
 }
