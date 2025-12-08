@@ -11,7 +11,14 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiQuery,
+  ApiBody,
+} from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -23,10 +30,29 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all users', description: 'Retrieve all users, optionally filtered by zone, ward, or status' })
-  @ApiQuery({ name: 'zoneId', required: false, description: 'Filter by zone ID', type: Number })
-  @ApiQuery({ name: 'wardId', required: false, description: 'Filter by ward ID', type: Number })
-  @ApiQuery({ name: 'status', required: false, description: 'Filter by status (pending/active)', enum: ['pending', 'active'] })
+  @ApiOperation({
+    summary: 'Get all users',
+    description:
+      'Retrieve all users, optionally filtered by zone, ward, or status',
+  })
+  @ApiQuery({
+    name: 'zoneId',
+    required: false,
+    description: 'Filter by zone ID',
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'wardId',
+    required: false,
+    description: 'Filter by ward ID',
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'status',
+    required: false,
+    description: 'Filter by status (pending/active)',
+    enum: ['pending', 'active'],
+  })
   @ApiResponse({ status: 200, description: 'Users retrieved successfully' })
   async findAll(
     @Query('zoneId') zoneId?: string,
@@ -46,7 +72,10 @@ export class UsersController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get user by ID', description: 'Retrieve a specific user by their ID' })
+  @ApiOperation({
+    summary: 'Get user by ID',
+    description: 'Retrieve a specific user by their ID',
+  })
   @ApiParam({ name: 'id', description: 'User ID', type: Number })
   @ApiResponse({ status: 200, description: 'User retrieved successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })
@@ -55,17 +84,29 @@ export class UsersController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create new user', description: 'Create a new user account (status defaults to "pending")' })
+  @ApiOperation({
+    summary: 'Create new user',
+    description: 'Create a new user account (status defaults to "pending")',
+  })
   @ApiBody({ type: CreateUserDto })
-  @ApiResponse({ status: 201, description: 'User created successfully with pending status' })
-  @ApiResponse({ status: 400, description: 'Invalid input or duplicate email/meter number' })
+  @ApiResponse({
+    status: 201,
+    description: 'User created successfully with pending status',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid input or duplicate email/meter number',
+  })
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Update user', description: 'Update an existing user\'s information' })
+  @ApiOperation({
+    summary: 'Update user',
+    description: "Update an existing user's information",
+  })
   @ApiParam({ name: 'id', description: 'User ID', type: Number })
   @ApiBody({ type: UpdateUserDto })
   @ApiResponse({ status: 200, description: 'User updated successfully' })
@@ -78,7 +119,10 @@ export class UsersController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete user', description: 'Remove a user from the system' })
+  @ApiOperation({
+    summary: 'Delete user',
+    description: 'Remove a user from the system',
+  })
   @ApiParam({ name: 'id', description: 'User ID', type: Number })
   @ApiResponse({ status: 204, description: 'User deleted successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })
@@ -88,7 +132,10 @@ export class UsersController {
   }
 
   @Put(':id/activate')
-  @ApiOperation({ summary: 'Activate user', description: 'Change user status from "pending" to "active"' })
+  @ApiOperation({
+    summary: 'Activate user',
+    description: 'Change user status from "pending" to "active"',
+  })
   @ApiParam({ name: 'id', description: 'User ID', type: Number })
   @ApiResponse({ status: 200, description: 'User activated successfully' })
   @ApiResponse({ status: 404, description: 'User not found' })

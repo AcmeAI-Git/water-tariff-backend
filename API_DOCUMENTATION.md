@@ -1,15 +1,19 @@
 # Water Tariff Management API Documentation
 
 ## Overview
+
 The Water Tariff Management API is a comprehensive system for managing water billing with slab-based pricing, user management, location hierarchies, and approval workflows.
 
 ## Base URL
+
 ```
 http://localhost:3000
 ```
 
 ## Interactive API Documentation
+
 Once the application is running, visit:
+
 ```
 http://localhost:3000/api-docs
 ```
@@ -17,11 +21,13 @@ http://localhost:3000/api-docs
 ## Installation & Setup
 
 ### Prerequisites
+
 - Node.js (v18 or higher)
 - PostgreSQL database
 - npm or yarn
 
 ### Installation
+
 ```bash
 # Install dependencies
 npm install
@@ -31,7 +37,9 @@ npm install --save @nestjs/swagger
 ```
 
 ### Environment Configuration
+
 Create a `.env` file in the root directory:
+
 ```env
 DB_HOST=localhost
 DB_PORT=5432
@@ -42,6 +50,7 @@ PORT=3000
 ```
 
 ### Running the Application
+
 ```bash
 # Development mode
 npm run start:dev
@@ -56,16 +65,20 @@ npm run start:prod
 All API responses follow a standardized format:
 
 ### Success Response
+
 ```json
 {
   "status": "success",
   "statusCode": 200,
   "message": "Operation successful",
-  "data": { /* response data */ }
+  "data": {
+    /* response data */
+  }
 }
 ```
 
 ### Error Response
+
 ```json
 {
   "status": "error",
@@ -81,15 +94,18 @@ All API responses follow a standardized format:
 ### 1. Admins (`/admins`)
 
 #### Get All Admins
+
 ```http
 GET /admins
 GET /admins?roleId=1
 ```
 
 **Query Parameters:**
+
 - `roleId` (optional): Filter by role ID
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -109,11 +125,13 @@ GET /admins?roleId=1
 ```
 
 #### Get Admin by ID
+
 ```http
 GET /admins/:id
 ```
 
 #### Create Admin
+
 ```http
 POST /admins
 Content-Type: application/json
@@ -128,6 +146,7 @@ Content-Type: application/json
 ```
 
 #### Update Admin
+
 ```http
 PUT /admins/:id
 Content-Type: application/json
@@ -139,11 +158,13 @@ Content-Type: application/json
 ```
 
 #### Delete Admin
+
 ```http
 DELETE /admins/:id
 ```
 
 #### Admin Login
+
 ```http
 POST /admins/login
 Content-Type: application/json
@@ -155,6 +176,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -170,6 +192,7 @@ Content-Type: application/json
 ```
 
 #### Change Password
+
 ```http
 PUT /admins/:id/change-password
 Content-Type: application/json
@@ -185,20 +208,24 @@ Content-Type: application/json
 ### 2. Users (`/users`)
 
 #### Get All Users
+
 ```http
 GET /users
 GET /users?status=active
 ```
 
 **Query Parameters:**
+
 - `status` (optional): Filter by status (pending/active)
 
 #### Get User by ID
+
 ```http
 GET /users/:id
 ```
 
 #### Create User
+
 ```http
 POST /users
 Content-Type: application/json
@@ -213,9 +240,11 @@ Content-Type: application/json
   "wardId": 1
 }
 ```
+
 **Note:** User status defaults to "pending" on creation.
 
 #### Update User Status (Activate)
+
 ```http
 PUT /users/:id/status
 Content-Type: application/json
@@ -226,6 +255,7 @@ Content-Type: application/json
 ```
 
 #### Update User
+
 ```http
 PUT /users/:id
 Content-Type: application/json
@@ -237,6 +267,7 @@ Content-Type: application/json
 ```
 
 #### Delete User
+
 ```http
 DELETE /users/:id
 ```
@@ -246,16 +277,19 @@ DELETE /users/:id
 ### 3. Roles (`/roles`)
 
 #### Get All Roles
+
 ```http
 GET /roles
 ```
 
 #### Get Role by ID
+
 ```http
 GET /roles/:id
 ```
 
 #### Create Role
+
 ```http
 POST /roles
 Content-Type: application/json
@@ -267,11 +301,13 @@ Content-Type: application/json
 ```
 
 #### Update Role
+
 ```http
 PUT /roles/:id
 ```
 
 #### Delete Role
+
 ```http
 DELETE /roles/:id
 ```
@@ -281,16 +317,19 @@ DELETE /roles/:id
 ### 4. City Corporations (`/city-corporations`)
 
 #### Get All City Corporations
+
 ```http
 GET /city-corporations
 ```
 
 #### Get City Corporation by ID
+
 ```http
 GET /city-corporations/:id
 ```
 
 #### Create City Corporation
+
 ```http
 POST /city-corporations
 Content-Type: application/json
@@ -302,11 +341,13 @@ Content-Type: application/json
 ```
 
 #### Update City Corporation
+
 ```http
 PUT /city-corporations/:id
 ```
 
 #### Delete City Corporation
+
 ```http
 DELETE /city-corporations/:id
 ```
@@ -316,12 +357,14 @@ DELETE /city-corporations/:id
 ### 5. Zones (`/zones`)
 
 #### Get All Zones
+
 ```http
 GET /zones
 GET /zones?cityCorporationId=1
 ```
 
 #### Create Zone
+
 ```http
 POST /zones
 Content-Type: application/json
@@ -335,6 +378,7 @@ Content-Type: application/json
 ```
 
 **Tariff Categories:**
+
 - `residential`
 - `commercial`
 - `industrial`
@@ -344,12 +388,14 @@ Content-Type: application/json
 ### 6. Wards (`/wards`)
 
 #### Get All Wards
+
 ```http
 GET /wards
 GET /wards?zoneId=1
 ```
 
 #### Create Ward
+
 ```http
 POST /wards
 Content-Type: application/json
@@ -369,17 +415,20 @@ Content-Type: application/json
 Tariff plans define slab-based pricing structures for water billing.
 
 #### Get All Tariff Plans
+
 ```http
 GET /tariff-plans
 GET /tariff-plans?approvalStatusId=2
 ```
 
 #### Get Tariff Plan by ID
+
 ```http
 GET /tariff-plans/:id
 ```
 
 #### Create Tariff Plan
+
 ```http
 POST /tariff-plans
 Content-Type: application/json
@@ -414,12 +463,14 @@ Content-Type: application/json
 ```
 
 **Slab Validation Rules:**
+
 - First slab must start at 0
 - Slabs must be continuous (next minUsage = previous maxUsage)
 - Only the last slab can have `null` maxUsage (unlimited)
 - Slabs must be in sequential order
 
 #### Calculate Bill
+
 ```http
 POST /tariff-plans/:id/calculate-bill
 Content-Type: application/json
@@ -430,6 +481,7 @@ Content-Type: application/json
 ```
 
 **Response:**
+
 ```json
 {
   "status": "success",
@@ -463,6 +515,7 @@ Content-Type: application/json
 ```
 
 #### Approve Tariff Plan
+
 ```http
 PUT /tariff-plans/:id/approve
 Content-Type: application/json
@@ -474,6 +527,7 @@ Content-Type: application/json
 ```
 
 #### Reject Tariff Plan
+
 ```http
 PUT /tariff-plans/:id/reject
 Content-Type: application/json
@@ -485,14 +539,17 @@ Content-Type: application/json
 ```
 
 #### Update Tariff Plan
+
 ```http
 PUT /tariff-plans/:id
 ```
 
 #### Delete Tariff Plan
+
 ```http
 DELETE /tariff-plans/:id
 ```
+
 **Note:** Deleting a tariff plan cascades and deletes all associated slabs.
 
 ---
@@ -500,11 +557,13 @@ DELETE /tariff-plans/:id
 ### 8. Approval Status (`/approval-status`)
 
 #### Get All Approval Statuses
+
 ```http
 GET /approval-status
 ```
 
 **Default Statuses:**
+
 - ID 1: Pending
 - ID 2: Approved
 - ID 3: Rejected
@@ -516,12 +575,14 @@ GET /approval-status
 Generic approval workflow management.
 
 #### Get All Approval Requests
+
 ```http
 GET /approval-requests
 GET /approval-requests?statusId=1
 ```
 
 #### Create Approval Request
+
 ```http
 POST /approval-requests
 Content-Type: application/json
@@ -570,6 +631,7 @@ ApprovalStatus (1) ──→ (N) ApprovalRequest
 Currently, the API uses admin login with email/password authentication. Password hashing is implemented using bcrypt with 10 salt rounds.
 
 **Future Enhancements:**
+
 - JWT token-based authentication
 - Role-based access control (RBAC)
 - API key authentication for external systems
@@ -577,6 +639,7 @@ Currently, the API uses admin login with email/password authentication. Password
 ## Error Handling
 
 Common HTTP status codes:
+
 - `200 OK`: Successful operation
 - `201 Created`: Resource created successfully
 - `400 Bad Request`: Invalid input or validation error
@@ -587,18 +650,21 @@ Common HTTP status codes:
 ## Validation Rules
 
 ### Admin
+
 - Email must be valid format
 - Password minimum 6 characters
 - Phone number required
 - Role ID must exist
 
 ### User
+
 - Email must be unique
 - Meter number must be unique
 - Status defaults to "pending"
 - Zone and Ward IDs must exist
 
 ### Tariff Plan
+
 - Effective date required
 - At least one slab required
 - Slabs must follow continuity rules
@@ -607,6 +673,7 @@ Common HTTP status codes:
 ## Best Practices
 
 1. **Always include proper headers:**
+
    ```http
    Content-Type: application/json
    ```

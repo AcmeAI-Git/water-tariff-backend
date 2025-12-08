@@ -25,7 +25,9 @@ async function bootstrap() {
   // Swagger API Documentation
   const config = new DocumentBuilder()
     .setTitle('Water Tariff Management API')
-    .setDescription('API for managing water tariff billing system with slab-based pricing, user management, and approval workflows')
+    .setDescription(
+      'API for managing water tariff billing system with slab-based pricing, user management, and approval workflows',
+    )
     .setVersion('1.0')
     .addTag('admins', 'Admin user management and authentication')
     .addTag('users', 'Customer user management')
@@ -38,12 +40,16 @@ async function bootstrap() {
     .addTag('approval-status', 'Approval status lookup')
     .addTag('approval-requests', 'Approval request management')
     .build();
-  
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api-docs', app, document);
 
   await app.listen(process.env.PORT ?? 3000);
-  console.log(`Application is running on: http://localhost:${process.env.PORT ?? 3000}`);
-  console.log(`API Documentation available at: http://localhost:${process.env.PORT ?? 3000}/api-docs`);
+  console.log(
+    `Application is running on: http://localhost:${process.env.PORT ?? 3000}`,
+  );
+  console.log(
+    `API Documentation available at: http://localhost:${process.env.PORT ?? 3000}/api-docs`,
+  );
 }
 bootstrap();

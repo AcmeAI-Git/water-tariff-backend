@@ -11,7 +11,14 @@ import {
   HttpStatus,
   Query,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery, ApiBody } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiQuery,
+  ApiBody,
+} from '@nestjs/swagger';
 import { AdminsService } from './admins.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
@@ -26,8 +33,16 @@ export class AdminsController {
   constructor(private readonly adminsService: AdminsService) {}
 
   @Get()
-  @ApiOperation({ summary: 'Get all admins or filter by role', description: 'Retrieve all admin users, optionally filtered by role ID' })
-  @ApiQuery({ name: 'roleId', required: false, description: 'Filter admins by role ID', type: Number })
+  @ApiOperation({
+    summary: 'Get all admins or filter by role',
+    description: 'Retrieve all admin users, optionally filtered by role ID',
+  })
+  @ApiQuery({
+    name: 'roleId',
+    required: false,
+    description: 'Filter admins by role ID',
+    type: Number,
+  })
   @ApiResponse({ status: 200, description: 'Admins retrieved successfully' })
   async findAll(@Query('roleId') roleId?: string) {
     const data = roleId
@@ -41,7 +56,10 @@ export class AdminsController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get admin by ID', description: 'Retrieve a specific admin by their ID' })
+  @ApiOperation({
+    summary: 'Get admin by ID',
+    description: 'Retrieve a specific admin by their ID',
+  })
   @ApiParam({ name: 'id', description: 'Admin ID', type: Number })
   @ApiResponse({ status: 200, description: 'Admin retrieved successfully' })
   @ApiResponse({ status: 404, description: 'Admin not found' })
@@ -55,7 +73,10 @@ export class AdminsController {
   }
 
   @Post()
-  @ApiOperation({ summary: 'Create new admin', description: 'Create a new admin user with role assignment' })
+  @ApiOperation({
+    summary: 'Create new admin',
+    description: 'Create a new admin user with role assignment',
+  })
   @ApiBody({ type: CreateAdminDto })
   @ApiResponse({ status: 201, description: 'Admin created successfully' })
   @ApiResponse({ status: 400, description: 'Invalid input data' })
@@ -70,7 +91,10 @@ export class AdminsController {
   }
 
   @Put(':id')
-  @ApiOperation({ summary: 'Update admin', description: 'Update an existing admin\'s information' })
+  @ApiOperation({
+    summary: 'Update admin',
+    description: "Update an existing admin's information",
+  })
   @ApiParam({ name: 'id', description: 'Admin ID', type: Number })
   @ApiBody({ type: UpdateAdminDto })
   @ApiResponse({ status: 200, description: 'Admin updated successfully' })
@@ -88,7 +112,10 @@ export class AdminsController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete admin', description: 'Remove an admin from the system' })
+  @ApiOperation({
+    summary: 'Delete admin',
+    description: 'Remove an admin from the system',
+  })
   @ApiParam({ name: 'id', description: 'Admin ID', type: Number })
   @ApiResponse({ status: 200, description: 'Admin deleted successfully' })
   @ApiResponse({ status: 404, description: 'Admin not found' })
@@ -99,7 +126,10 @@ export class AdminsController {
   }
 
   @Post('login')
-  @ApiOperation({ summary: 'Admin login', description: 'Authenticate an admin user with email and password' })
+  @ApiOperation({
+    summary: 'Admin login',
+    description: 'Authenticate an admin user with email and password',
+  })
   @ApiBody({ type: LoginAdminDto })
   @ApiResponse({ status: 200, description: 'Login successful' })
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
@@ -110,7 +140,10 @@ export class AdminsController {
   }
 
   @Put(':id/change-password')
-  @ApiOperation({ summary: 'Change password', description: 'Change the password for an admin account' })
+  @ApiOperation({
+    summary: 'Change password',
+    description: 'Change the password for an admin account',
+  })
   @ApiParam({ name: 'id', description: 'Admin ID', type: Number })
   @ApiBody({ type: ChangePasswordDto })
   @ApiResponse({ status: 200, description: 'Password changed successfully' })

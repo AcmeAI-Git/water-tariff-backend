@@ -14,23 +14,36 @@ export class CreateAdminDto {
   @IsNotEmpty()
   fullName: string;
 
-  @ApiProperty({ example: '+8801712345678', description: 'Phone number of the admin' })
+  @ApiProperty({
+    example: '+8801712345678',
+    description: 'Phone number of the admin',
+  })
   @IsString()
   @IsNotEmpty()
   phone: string;
 
-  @ApiProperty({ example: 'admin@example.com', description: 'Email address of the admin' })
+  @ApiProperty({
+    example: 'admin@example.com',
+    description: 'Email address of the admin',
+  })
   @IsEmail()
   @IsNotEmpty()
   email: string;
 
-  @ApiProperty({ example: 'password123', description: 'Password (minimum 6 characters)', minLength: 6 })
+  @ApiProperty({
+    example: 'password123',
+    description: 'Password (minimum 6 characters)',
+    minLength: 6,
+  })
   @IsString()
   @IsNotEmpty()
   @MinLength(6)
   password: string;
 
-  @ApiProperty({ example: 1, description: 'ID of the role to assign to this admin' })
+  @ApiProperty({
+    example: 1,
+    description: 'ID of the role to assign to this admin',
+  })
   @IsNumber()
   @IsNotEmpty()
   roleId: number;
