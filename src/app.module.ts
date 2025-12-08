@@ -8,6 +8,9 @@ import { getDatabaseConfig } from './config/database.config';
 import { ConfigModule } from '@nestjs/config';
 import { RolesModule } from './roles/roles.module';
 import { AdminsModule } from './admins/admins.module';
+import { CityCorporationsModule } from './city-corporations/city-corporations.module';
+import { ZonesModule } from './zones/zones.module';
+import { WardsModule } from './wards/wards.module';
 
 @Module({
   imports: [
@@ -16,6 +19,9 @@ import { AdminsModule } from './admins/admins.module';
     UsersModule,
     RolesModule,
     AdminsModule,
+    CityCorporationsModule,
+    ZonesModule,
+    WardsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
