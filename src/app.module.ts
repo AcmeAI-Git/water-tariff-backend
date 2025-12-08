@@ -11,6 +11,9 @@ import { AdminsModule } from './admins/admins.module';
 import { CityCorporationsModule } from './city-corporations/city-corporations.module';
 import { ZonesModule } from './zones/zones.module';
 import { WardsModule } from './wards/wards.module';
+import { TariffRulesModule } from './tariff-rules/tariff-rules.module';
+import { ApprovalStatusModule } from './approval-status/approval-status.module';
+import { ApprovalRequestsModule } from './approval-requests/approval-requests.module';
 
 @Module({
   imports: [
@@ -22,6 +25,9 @@ import { WardsModule } from './wards/wards.module';
     CityCorporationsModule,
     ZonesModule,
     WardsModule,
+    TariffRulesModule,
+    ApprovalStatusModule,
+    ApprovalRequestsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
