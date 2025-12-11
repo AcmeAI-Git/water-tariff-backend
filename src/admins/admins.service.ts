@@ -12,6 +12,7 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { LoginAdminDto } from './dto/login-admin.dto';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { AuditLogsService } from '../audit-logs/audit-logs.service';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -19,6 +20,7 @@ export class AdminsService {
   constructor(
     @InjectRepository(Admin)
     private readonly adminRepository: Repository<Admin>,
+    private readonly auditLogsService: AuditLogsService,
   ) {}
 
   async findAll(): Promise<Admin[]> {
@@ -84,6 +86,16 @@ export class AdminsService {
 
     const savedAdmin = await this.adminRepository.save(admin);
 
+    // Log audit
+    await this.auditLogsService.logChange(
+      savedAdmin.id,
+      'Created Admin',
+      'admins',
+      savedAdmin.id,
+      null,
+      { ...createAdminDto, password: '[REDACTED]' },
+    );
+
     // Return admin without password
     const { password, ...result } = savedAdmin;
     return result as Admin;
@@ -95,6 +107,9 @@ export class AdminsService {
     if (!admin) {
       throw new NotFoundException(`Admin with ID ${id} not found`);
     }
+
+    // Store old data for audit
+    const { password: oldPassword, ...oldData } = admin;
 
     // Check if email is being updated and if it already exists
     if (updateAdminDto.email && updateAdminDto.email !== admin.email) {
@@ -111,6 +126,19 @@ export class AdminsService {
 
     await this.adminRepository.update(id, updateAdminDto);
 
+    // Log audit
+    await this.auditLogsService.logChange(
+      id,
+      'Updated Admin',
+      'admins',
+      id,
+      oldData,
+      {
+        ...updateAdminDto,
+        password: updateAdminDto.password ? '[REDACTED]' : undefined,
+      },
+    );
+
     return this.findOne(id);
   }
 
@@ -121,7 +149,20 @@ export class AdminsService {
       throw new NotFoundException(`Admin with ID ${id} not found`);
     }
 
+    // Store data for audit
+    const { password, ...adminData } = admin;
+
     await this.adminRepository.delete(id);
+
+    // Log audit
+    await this.auditLogsService.logChange(
+      id,
+      'Deleted Admin',
+      'admins',
+      id,
+      adminData,
+      null,
+    );
   }
 
   async findByRole(roleId: number): Promise<Admin[]> {

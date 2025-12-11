@@ -11,6 +11,7 @@ import { CreateTariffPlanDto } from './dto/create-tariff-plan.dto';
 import { UpdateTariffPlanDto } from './dto/update-tariff-plan.dto';
 import { ApproveTariffRuleDto } from './dto/approve-tariff-rule.dto';
 import { ApprovalStatus } from '../approval-status/approval-status.entity';
+import { AuditLogsService } from '../audit-logs/audit-logs.service';
 
 @Injectable()
 export class TariffPlansService {
@@ -21,6 +22,7 @@ export class TariffPlansService {
     private readonly tariffSlabRepository: Repository<TariffSlab>,
     @InjectRepository(ApprovalStatus)
     private readonly approvalStatusRepository: Repository<ApprovalStatus>,
+    private readonly auditLogsService: AuditLogsService,
   ) {}
 
   async findAll(): Promise<TariffPlan[]> {

@@ -8,6 +8,7 @@ import { TariffSlab } from './tariff-slab.entity';
 import { TariffPlansController } from './tariff-plans.controller';
 import { TariffPlansService } from './tariff-plans.service';
 import { ApprovalStatus } from '../approval-status/approval-status.entity';
+import { AuditLogsModule } from '../audit-logs/audit-logs.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { ApprovalStatus } from '../approval-status/approval-status.entity';
       TariffSlab,
       ApprovalStatus,
     ]),
+    AuditLogsModule,
   ],
   controllers: [TariffRulesController, TariffPlansController],
   providers: [TariffRulesService, TariffPlansService],

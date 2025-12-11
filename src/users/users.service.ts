@@ -8,12 +8,14 @@ import { Repository } from 'typeorm';
 import { User } from './user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuditLogsService } from '../audit-logs/audit-logs.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private readonly auditLogsService: AuditLogsService,
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -85,7 +87,19 @@ export class UsersService {
       ...createUserDto,
       status: 'pending',
     });
-    return this.usersRepository.save(user);
+    const savedUser = await this.usersRepository.save(user);
+
+    // Log audit
+    await this.auditLogsService.logChange(
+      savedUser.id,
+      'Created User',
+      'users',
+      savedUser.id,
+      null,
+      createUserDto,
+    );
+
+    return savedUser;
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
@@ -94,6 +108,9 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
+
+    // Store old data
+    const oldData = { ...user };
 
     // Check if email is being updated and if it already exists
     if (updateUserDto.email && updateUserDto.email !== user.email) {
@@ -112,6 +129,17 @@ export class UsersService {
     }
 
     await this.usersRepository.update(id, updateUserDto);
+
+    // Log audit
+    await this.auditLogsService.logChange(
+      id,
+      'Updated User',
+      'users',
+      id,
+      oldData,
+      updateUserDto,
+    );
+
     return this.findOne(id);
   }
 
@@ -122,7 +150,20 @@ export class UsersService {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
 
+    // Store data for audit
+    const userData = { ...user };
+
     await this.usersRepository.delete(id);
+
+    // Log audit
+    await this.auditLogsService.logChange(
+      id,
+      'Deleted User',
+      'users',
+      id,
+      userData,
+      null,
+    );
   }
 
   async updateStatus(id: number, status: string): Promise<User> {
@@ -132,7 +173,20 @@ export class UsersService {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
 
+    const oldStatus = user.status;
+
     await this.usersRepository.update(id, { status });
+
+    // Log audit
+    await this.auditLogsService.logChange(
+      id,
+      `Updated User Status: ${oldStatus} → ${status}`,
+      'users',
+      id,
+      { status: oldStatus },
+      { status },
+    );
+
     return this.findOne(id);
   }
 }

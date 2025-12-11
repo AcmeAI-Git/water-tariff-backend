@@ -14,6 +14,8 @@ import { WardsModule } from './wards/wards.module';
 import { TariffRulesModule } from './tariff-rules/tariff-rules.module';
 import { ApprovalStatusModule } from './approval-status/approval-status.module';
 import { ApprovalRequestsModule } from './approval-requests/approval-requests.module';
+import { AuditLogsModule } from './audit-logs/audit-logs.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -28,6 +30,8 @@ import { ApprovalRequestsModule } from './approval-requests/approval-requests.mo
     TariffRulesModule,
     ApprovalStatusModule,
     ApprovalRequestsModule,
+    AuditLogsModule,
+    NotificationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
