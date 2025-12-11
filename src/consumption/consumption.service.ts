@@ -11,6 +11,8 @@ import { UpdateConsumptionDto } from './dto/update-consumption.dto';
 import { ApproveConsumptionDto } from './dto/approve-consumption.dto';
 import { ApprovalStatus } from '../approval-status/approval-status.entity';
 import { AuditLogsService } from '../audit-logs/audit-logs.service';
+import { TariffPlansService } from '../tariff-rules/tariff-plans.service';
+import { WaterBillsService } from '../water-bills/water-bills.service';
 
 @Injectable()
 export class ConsumptionService {
@@ -20,6 +22,8 @@ export class ConsumptionService {
     @InjectRepository(ApprovalStatus)
     private readonly approvalStatusRepository: Repository<ApprovalStatus>,
     private readonly auditLogsService: AuditLogsService,
+    private readonly tariffPlansService: TariffPlansService,
+    private readonly waterBillsService: WaterBillsService,
   ) {}
 
   async findAll(): Promise<Consumption[]> {
@@ -193,7 +197,7 @@ export class ConsumptionService {
   ): Promise<Consumption> {
     const consumption = await this.consumptionRepository.findOne({
       where: { id },
-      relations: ['approvalStatus'],
+      relations: ['approvalStatus', 'user'],
     });
 
     if (!consumption) {
@@ -228,6 +232,44 @@ export class ConsumptionService {
       { status: 'Pending' },
       { status: 'Approved', approvedBy: approveConsumptionDto.approvedBy },
     );
+
+    // Automatically create water bill after approval
+    try {
+      // Check if bill already exists for this consumption
+      const existingBill = await this.waterBillsService.findByConsumption(id);
+
+      if (!existingBill) {
+        // Get active tariff plan and calculate bill
+        const activePlans = await this.tariffPlansService.findActive();
+
+        if (activePlans && activePlans.length > 0) {
+          const tariffPlan = activePlans[0]; // Use the first active tariff plan
+
+          // Calculate bill using tariff plan
+          const billCalculation = await this.tariffPlansService.calculateBill(
+            consumption.consumption,
+            tariffPlan.id,
+          );
+
+          // Create water bill
+          await this.waterBillsService.create(
+            {
+              userId: consumption.userId,
+              tariffPlanId: tariffPlan.id,
+              consumptionId: id,
+              totalBill: billCalculation.totalAmount,
+              breakdown: billCalculation.breakdown,
+              billMonth: consumption.billMonth,
+              status: 'Unpaid',
+            },
+            approveConsumptionDto.approvedBy,
+          );
+        }
+      }
+    } catch (error) {
+      // Log error but don't fail the approval
+      console.error('Failed to create water bill:', error.message);
+    }
 
     return this.findOne(id);
   }

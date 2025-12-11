@@ -39,6 +39,10 @@ async function bootstrap() {
     .addTag('tariff-rules', 'Legacy tariff rules')
     .addTag('approval-status', 'Approval status lookup')
     .addTag('approval-requests', 'Approval request management')
+    .addTag('audit-logs', 'Audit log tracking')
+    .addTag('notifications', 'Notification management')
+    .addTag('consumption', 'Water consumption tracking and approval')
+    .addTag('water-bills', 'Water bill management and payment')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

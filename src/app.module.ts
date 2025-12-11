@@ -17,6 +17,7 @@ import { ApprovalRequestsModule } from './approval-requests/approval-requests.mo
 import { AuditLogsModule } from './audit-logs/audit-logs.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ConsumptionModule } from './consumption/consumption.module';
+import { WaterBillsModule } from './water-bills/water-bills.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ConsumptionModule } from './consumption/consumption.module';
     AuditLogsModule,
     NotificationsModule,
     ConsumptionModule,
+    WaterBillsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
