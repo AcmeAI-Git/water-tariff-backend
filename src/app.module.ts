@@ -16,6 +16,7 @@ import { ApprovalStatusModule } from './approval-status/approval-status.module';
 import { ApprovalRequestsModule } from './approval-requests/approval-requests.module';
 import { AuditLogsModule } from './audit-logs/audit-logs.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { ConsumptionModule } from './consumption/consumption.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { NotificationsModule } from './notifications/notifications.module';
     ApprovalRequestsModule,
     AuditLogsModule,
     NotificationsModule,
+    ConsumptionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
