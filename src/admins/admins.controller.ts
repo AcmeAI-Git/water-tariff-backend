@@ -82,7 +82,8 @@ export class AdminsController {
   @ApiResponse({ status: 400, description: 'Invalid input data' })
   @HttpCode(HttpStatus.CREATED)
   async create(@Body() createAdminDto: CreateAdminDto) {
-    const data = await this.adminsService.create(createAdminDto);
+    let userId = 1;
+    const data = await this.adminsService.create(createAdminDto, userId);
     return new SuccessResponse(
       HttpStatus.CREATED,
       'Admin created successfully',

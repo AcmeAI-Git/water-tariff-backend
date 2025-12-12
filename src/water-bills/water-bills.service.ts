@@ -89,14 +89,14 @@ export class WaterBillsService {
 
     // Log audit
     if (userId) {
-      await this.auditLogsService.logChange(
-        userId,
-        'Created Water Bill',
-        'water_bills',
-        savedBill.id,
-        null,
-        createWaterBillDto,
-      );
+      // await this.auditLogsService.logChange(
+      //   userId,
+      //   'Created Water Bill',
+      //   'water_bills',
+      //   savedBill.id,
+      //   null,
+      //   createWaterBillDto,
+      // );
     }
 
     return this.findOne(savedBill.id);
@@ -119,14 +119,14 @@ export class WaterBillsService {
 
     // Log audit
     if (userId) {
-      await this.auditLogsService.logChange(
-        userId,
-        'Updated Water Bill',
-        'water_bills',
-        id,
-        oldData,
-        updateWaterBillDto,
-      );
+      // await this.auditLogsService.logChange(
+      //   userId,
+      //   'Updated Water Bill',
+      //   'water_bills',
+      //   id,
+      //   oldData,
+      //   updateWaterBillDto,
+      // );
     }
 
     return this.findOne(id);
@@ -144,14 +144,14 @@ export class WaterBillsService {
 
     // Log audit
     if (userId) {
-      await this.auditLogsService.logChange(
-        userId,
-        'Marked Bill as Paid',
-        'water_bills',
-        id,
-        { status: 'Unpaid' },
-        { status: 'Paid' },
-      );
+      // await this.auditLogsService.logChange(
+      //   userId,
+      //   'Marked Bill as Paid',
+      //   'water_bills',
+      //   id,
+      //   { status: 'Unpaid' },
+      //   { status: 'Paid' },
+      // );
     }
 
     return this.findOne(id);
@@ -167,14 +167,14 @@ export class WaterBillsService {
 
     // Log audit
     if (userId) {
-      await this.auditLogsService.logChange(
-        userId,
-        'Deleted Water Bill',
-        'water_bills',
-        id,
-        oldData,
-        null,
-      );
+      // await this.auditLogsService.logChange(
+      //   userId,
+      //   'Deleted Water Bill',
+      //   'water_bills',
+      //   id,
+      //   oldData,
+      //   null,
+      // );
     }
   }
 }

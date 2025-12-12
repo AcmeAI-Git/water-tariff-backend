@@ -90,14 +90,14 @@ export class UsersService {
     const savedUser = await this.usersRepository.save(user);
 
     // Log audit
-    await this.auditLogsService.logChange(
-      savedUser.id,
-      'Created User',
-      'users',
-      savedUser.id,
-      null,
-      createUserDto,
-    );
+    // await this.auditLogsService.logChange(
+    //   savedUser.id,
+    //   'Created User',
+    //   'users',
+    //   savedUser.id,
+    //   null,
+    //   createUserDto,
+    // );
 
     return savedUser;
   }
@@ -131,14 +131,14 @@ export class UsersService {
     await this.usersRepository.update(id, updateUserDto);
 
     // Log audit
-    await this.auditLogsService.logChange(
-      id,
-      'Updated User',
-      'users',
-      id,
-      oldData,
-      updateUserDto,
-    );
+    // await this.auditLogsService.logChange(
+    //   id,
+    //   'Updated User',
+    //   'users',
+    //   id,
+    //   oldData,
+    //   updateUserDto,
+    // );
 
     return this.findOne(id);
   }
@@ -156,14 +156,14 @@ export class UsersService {
     await this.usersRepository.delete(id);
 
     // Log audit
-    await this.auditLogsService.logChange(
-      id,
-      'Deleted User',
-      'users',
-      id,
-      userData,
-      null,
-    );
+    // await this.auditLogsService.logChange(
+    //   id,
+    //   'Deleted User',
+    //   'users',
+    //   id,
+    //   userData,
+    //   null,
+    // );
   }
 
   async updateStatus(id: number, status: string): Promise<User> {
@@ -178,14 +178,14 @@ export class UsersService {
     await this.usersRepository.update(id, { status });
 
     // Log audit
-    await this.auditLogsService.logChange(
-      id,
-      `Updated User Status: ${oldStatus} → ${status}`,
-      'users',
-      id,
-      { status: oldStatus },
-      { status },
-    );
+    // await this.auditLogsService.logChange(
+    //   id,
+    //   `Updated User Status: ${oldStatus} → ${status}`,
+    //   'users',
+    //   id,
+    //   { status: oldStatus },
+    //   { status },
+    // );
 
     return this.findOne(id);
   }

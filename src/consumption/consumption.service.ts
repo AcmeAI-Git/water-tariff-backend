@@ -121,20 +121,20 @@ export class ConsumptionService {
     const savedConsumption = await this.consumptionRepository.save(consumption);
 
     // Log audit
-    await this.auditLogsService.logChange(
-      createConsumptionDto.createdBy,
-      'Created Consumption Record',
-      'consumption',
-      savedConsumption.id,
-      null,
-      {
-        userId: createConsumptionDto.userId,
-        billMonth: createConsumptionDto.billMonth,
-        currentReading: createConsumptionDto.currentReading,
-        previousReading,
-        consumption: savedConsumption.consumption,
-      },
-    );
+    // await this.auditLogsService.logChange(
+    //   createConsumptionDto.createdBy,
+    //   'Created Consumption Record',
+    //   'consumption',
+    //   savedConsumption.id,
+    //   null,
+    //   {
+    //     userId: createConsumptionDto.userId,
+    //     billMonth: createConsumptionDto.billMonth,
+    //     currentReading: createConsumptionDto.currentReading,
+    //     previousReading,
+    //     consumption: savedConsumption.consumption,
+    //   },
+    // );
 
     return this.findOne(savedConsumption.id);
   }
@@ -179,14 +179,14 @@ export class ConsumptionService {
     await this.consumptionRepository.save(consumption);
 
     // Log audit
-    await this.auditLogsService.logChange(
-      consumption.createdBy,
-      'Updated Consumption Record',
-      'consumption',
-      id,
-      oldData,
-      updateConsumptionDto,
-    );
+    // await this.auditLogsService.logChange(
+    //   consumption.createdBy,
+    //   'Updated Consumption Record',
+    //   'consumption',
+    //   id,
+    //   oldData,
+    //   updateConsumptionDto,
+    // );
 
     return this.findOne(id);
   }
@@ -224,14 +224,14 @@ export class ConsumptionService {
     await this.consumptionRepository.save(consumption);
 
     // Log audit
-    await this.auditLogsService.logChange(
-      approveConsumptionDto.approvedBy,
-      'Approved Consumption Record',
-      'consumption',
-      id,
-      { status: 'Pending' },
-      { status: 'Approved', approvedBy: approveConsumptionDto.approvedBy },
-    );
+    // await this.auditLogsService.logChange(
+    //   approveConsumptionDto.approvedBy,
+    //   'Approved Consumption Record',
+    //   'consumption',
+    //   id,
+    //   { status: 'Pending' },
+    //   { status: 'Approved', approvedBy: approveConsumptionDto.approvedBy },
+    // );
 
     // Automatically create water bill after approval
     try {
@@ -307,14 +307,14 @@ export class ConsumptionService {
     await this.consumptionRepository.save(consumption);
 
     // Log audit
-    await this.auditLogsService.logChange(
-      approveConsumptionDto.approvedBy,
-      'Rejected Consumption Record',
-      'consumption',
-      id,
-      { status: 'Pending' },
-      { status: 'Rejected', rejectedBy: approveConsumptionDto.approvedBy },
-    );
+    // await this.auditLogsService.logChange(
+    //   approveConsumptionDto.approvedBy,
+    //   'Rejected Consumption Record',
+    //   'consumption',
+    //   id,
+    //   { status: 'Pending' },
+    //   { status: 'Rejected', rejectedBy: approveConsumptionDto.approvedBy },
+    // );
 
     return this.findOne(id);
   }
@@ -343,13 +343,13 @@ export class ConsumptionService {
     await this.consumptionRepository.delete(id);
 
     // Log audit
-    await this.auditLogsService.logChange(
-      consumption.createdBy,
-      'Deleted Consumption Record',
-      'consumption',
-      id,
-      consumptionData,
-      null,
-    );
+    // await this.auditLogsService.logChange(
+    //   consumption.createdBy,
+    //   'Deleted Consumption Record',
+    //   'consumption',
+    //   id,
+    //   consumptionData,
+    //   null,
+    // );
   }
 }

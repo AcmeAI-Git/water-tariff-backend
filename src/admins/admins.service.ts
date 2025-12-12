@@ -69,7 +69,7 @@ export class AdminsService {
     });
   }
 
-  async create(createAdminDto: CreateAdminDto): Promise<Admin> {
+  async create(createAdminDto: CreateAdminDto, userId: number): Promise<Admin> {
     // Check if email already exists
     const existingAdmin = await this.findByEmail(createAdminDto.email);
     if (existingAdmin) {
@@ -87,14 +87,14 @@ export class AdminsService {
     const savedAdmin = await this.adminRepository.save(admin);
 
     // Log audit
-    await this.auditLogsService.logChange(
-      savedAdmin.id,
-      'Created Admin',
-      'admins',
-      savedAdmin.id,
-      null,
-      { ...createAdminDto, password: '[REDACTED]' },
-    );
+    // await this.auditLogsService.logChange(
+    //   userId,
+    //   'Created Admin',
+    //   'admins',
+    //   savedAdmin.id,
+    //   null,
+    //   { ...createAdminDto, password: '[REDACTED]' },
+    // );
 
     // Return admin without password
     const { password, ...result } = savedAdmin;
@@ -127,17 +127,17 @@ export class AdminsService {
     await this.adminRepository.update(id, updateAdminDto);
 
     // Log audit
-    await this.auditLogsService.logChange(
-      id,
-      'Updated Admin',
-      'admins',
-      id,
-      oldData,
-      {
-        ...updateAdminDto,
-        password: updateAdminDto.password ? '[REDACTED]' : undefined,
-      },
-    );
+    // await this.auditLogsService.logChange(
+    //   id,
+    //   'Updated Admin',
+    //   'admins',
+    //   id,
+    //   oldData,
+    //   {
+    //     ...updateAdminDto,
+    //     password: updateAdminDto.password ? '[REDACTED]' : undefined,
+    //   },
+    // );
 
     return this.findOne(id);
   }
@@ -155,14 +155,14 @@ export class AdminsService {
     await this.adminRepository.delete(id);
 
     // Log audit
-    await this.auditLogsService.logChange(
-      id,
-      'Deleted Admin',
-      'admins',
-      id,
-      adminData,
-      null,
-    );
+    // await this.auditLogsService.logChange(
+    //   id,
+    //   'Deleted Admin',
+    //   'admins',
+    //   id,
+    //   adminData,
+    //   null,
+    // );
   }
 
   async findByRole(roleId: number): Promise<Admin[]> {
